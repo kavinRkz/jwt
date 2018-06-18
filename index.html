@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<head>
+   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js' ></script>
+   
+<script>
+function login()
+{
+    var a =$('#uname').val();
+    var p=$('#psw').val();
+    var formData = {
+    username : a,
+    password : p
+    }
+    
+//     $.ajax({  
+//     url: 'http://localhost:8080/login',
+//     type: 'POST',
+//     data : JSON.stringify(formData),
+//     contentType:'application/json',
+//     dataType :'text',
+//     crossDomain:false,
+//     headers: {
+//     'Content-Type': 'application/json',
+//     // 'Access-Control-Allow-Headers': 'x-requested-with'
+//     // "Authorization": localStorage.getItem('token')
+//     },
+
+//     success: function(res, status, xhr) {
+//     var token = xhr.getResponseHeader('Authorization');
+    
+//     $.ajax({
+//     type: "GET",
+//     url: "http://localhost:8080/user/home",
+//     beforeSend: function(xhr) {
+//     xhr.setRequestHeader("Authorization", "Bearer " + token);
+//     },
+//     success: function(res, status, xhr){
+//     if (status == 'success') {
+//       window.location.href ="http://localhost:8080/user/home";
+//     }
+//     }
+//     });
+//     },
+
+//     error: function(res, staus, xhr) {
+//     $('#message').text('Sorry, Invalid Credentials');
+//     $('#message').css('color','#dd4b39');
+//     $('#message').css('font-weight','700');
+//     $('#message').css("font-family" ,"'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif'");
+    
+//     }
+//     })
+// })
+// })
+var token ='';
+    $.ajax({  
+    url: 'http://localhost:5000/login',
+    type: 'POST',
+    data : JSON.stringify(formData),
+    contentType:'application/json',
+    dataType :'text',
+    crossDomain:false,
+    headers: {
+    'Content-Type': 'application/json',
+    // 'Access-Control-Allow-Headers': 'x-requested-with'
+    // "Authorization": localStorage.getItem('token')
+    },
+
+    success: function(res, status, xhr) {
+        // alert((xhr.responseText));
+        var a =(xhr.responseText);
+        var b =JSON.parse(a);
+        // var c =b.responseText;
+        // var d = JSON.stringify(c);
+        // var e = JSON.parse(d);
+        // var f =JSON.parse(e);
+       console.log(b)
+    
+    token = b;
+
+    $.ajax({
+    type: "post",
+    url: "http://localhost:5000/api/posts",
+    beforeSend: function(xhr) {
+    xhr.setRequestHeader("Authorization","bearer"+' ' +  token);
+    },
+   success: function(res, status, xhr){
+        alert(JSON.stringify(xhr));
+        console.log("STATUS"+status)
+        // res.renderHTML(res.responseText);
+        if(status == "success"){
+            alert("200")
+            // window.location.replace('login.html')
+        }
+        // window.location.href='http://localhost:5000/api/posts'
+   },
+   
+
+    error: function(res, staus, xhr) {
+    $('#message').text('Sorry, Invalid Credentials');
+    $('#message').css('color','#dd4b39');
+    $('#message').css('font-weight','700');
+    $('#message').css("font-family" ,"'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif'");
+    
+    }
+   
+    })
+}
+})
+}
+</script>
+
+
+</head>
+<body>
+<h1>Welcome</h1>
+
+ <!-- <form action="/login" method='post' id='signin'> -->
+ 
+
+  <div>
+
+<div>    <label><b>Username</b></label>
+    <input type="text" id="uname"  required><br>
+</div>
+<div>
+
+    <label><b>Password</b></label>&nbsp
+    <input type="password" id='psw'  required><br>
+</div>
+<div>
+    <input  type="submit" onclick='return login()' value='login'/>  
+  </div>
+<!-- </form> -->
+  
+<!-- </form>  -->
+
+</body>
+</html>
